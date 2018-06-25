@@ -91,9 +91,9 @@ public class FileRenamerMain extends JFrame{
     	JLabel renameMethodLbl = new JLabel("Rename Method:");
     	renameMethodLbl.setBounds(472, 210, 200, 20);
     	
-    	renameMethods.addItem("Modified On");
-    	renameMethods.addItem("Created On");
-    	renameMethods.addItem("Name");
+    	renameMethods.addItem("lastModified");
+    	renameMethods.addItem("createdOn");
+    	renameMethods.addItem("name");
     	
     	renameMethods.setBounds(472, 230, 200, 20);
     	
@@ -131,8 +131,9 @@ public class FileRenamerMain extends JFrame{
     }
     
     private void renameFiles() throws IOException {
+    	String selectedMethod = renameMethods.getSelectedItem().toString();
     	FileRenamerFactory renamerFactory = new FileRenamerFactory();
-    	FileRenamer fileRenamer = renamerFactory.getFileRenamer("lastModified");
+    	FileRenamer fileRenamer = renamerFactory.getFileRenamer(selectedMethod);
     	
     	fileRenamer.rename(files, newNameField.getText());
     }
