@@ -3,10 +3,11 @@ package at.psc.filerenamer;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class FileRenamerModifiedOn implements FileRenamer {
+public class FileRenamerName implements FileRenamer {
 
 	@Override
 	public void rename(ArrayList<File> files, String prefix) throws IOException {
@@ -20,7 +21,7 @@ public class FileRenamerModifiedOn implements FileRenamer {
     	
     	int count = 0;
     	
-    	files.sort(Comparator.comparing(File::lastModified));
+    	files.sort(Comparator.comparing(File::getName));
     	
     	 for( File file: files ) {
     		count ++;
@@ -35,5 +36,4 @@ public class FileRenamerModifiedOn implements FileRenamer {
 			}
     	}
 	}
-
 }

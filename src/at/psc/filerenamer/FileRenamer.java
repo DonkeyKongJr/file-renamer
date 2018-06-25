@@ -5,5 +5,5 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public interface FileRenamer {
-	void rename(ArrayList<File> files, String path) throws IOException;
+	void rename(ArrayList<File> files, String prefix) throws IOException;
 }
