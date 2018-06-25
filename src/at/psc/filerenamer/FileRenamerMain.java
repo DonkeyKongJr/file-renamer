@@ -1,12 +1,13 @@
 package at.psc.filerenamer;
 
 
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JFrame;
-import javax.swing.JFileChooser;
+import java.io.File;
+import java.util.ArrayList;
+import javax.swing.*;
 
 public class FileRenamerMain extends JFrame{
 
@@ -26,12 +27,12 @@ public class FileRenamerMain extends JFrame{
         setLayout(null);
 
         JButton okBtn = new JButton("Select Folder...");
-        okBtn.setBounds(20, 50, 180, 25);
+        okBtn.setBounds(400, 350, 140, 25);
 
         JButton clsBtn = new JButton("Close");
-        clsBtn.setBounds(250, 50, 80, 25);
+        clsBtn.setBounds(550, 350, 80, 25);
         
-        dirLbl.setBounds(20, 150, 300, 25);
+        dirLbl.setBounds(20, 320, 500, 25);
         
         clsBtn.addActionListener((ActionEvent e) -> {
         	System.exit(0);
@@ -46,7 +47,7 @@ public class FileRenamerMain extends JFrame{
         add(dirLbl);
 
         setTitle(appName);
-        setSize(400, 250);
+        setSize(700, 450);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -56,10 +57,40 @@ public class FileRenamerMain extends JFrame{
     	chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
     		int returnVal = chooser.showOpenDialog(this);
     		if(returnVal == JFileChooser.APPROVE_OPTION) {
-    			dirLbl.setText("Target Folder: " +
-    		        chooser.getSelectedFile().getName());
+    			dirLbl.setText("Folder: " +
+    		        chooser.getSelectedFile().getPath());
+                addListOverview(chooser.getSelectedFile().getPath());
     		}
+    }
 
+    private void addListOverview(String path){
+        ArrayList<String> listOfNames = getFilesFromDirectory(path);
+        JList list = new JList(listOfNames.toArray());
+        list.setBounds(50, 50, 400, 250);
+        add(list);
+
+        invalidate();
+        validate();
+        repaint();
+    }
+
+    private ArrayList<String> getFilesFromDirectory(String path){
+	    if(path.length() == 0){
+	        throw new IllegalArgumentException("path is empty");
+        }
+
+        ArrayList<String> fileNames = new ArrayList<String>();
+        File folder = new File(path);
+        File[] listOfFiles = folder.listFiles();
+
+        for (File file : listOfFiles) {
+            if (file.isFile()) {
+                fileNames.add(file.getName());
+                System.out.println(file.getName());
+            }
+        }
+
+        return  fileNames;
     }
 
     public static void main(String[] args) {
@@ -69,5 +100,4 @@ public class FileRenamerMain extends JFrame{
             ex.setVisible(true);
         });
     }
-
 }
