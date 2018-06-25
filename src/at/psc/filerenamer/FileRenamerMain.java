@@ -24,6 +24,7 @@ public class FileRenamerMain extends JFrame{
 	private ArrayList<File> files = new ArrayList<File>();
 	JTextField newNameField = new JTextField();
 	JLabel dirLbl = new JLabel();
+	JComboBox<String> renameMethods = new JComboBox<String>();
 	
 	public FileRenamerMain() {
         initUI();
@@ -77,11 +78,27 @@ public class FileRenamerMain extends JFrame{
         add(clsBtn);
         add(dirLbl);
         add(fileList);
+        
+        addComboBox();
 
         setTitle(appName);
         setSize(700, 450);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
+    }
+    
+    private void addComboBox() {
+    	JLabel renameMethodLbl = new JLabel("Rename Method:");
+    	renameMethodLbl.setBounds(472, 210, 200, 20);
+    	
+    	renameMethods.addItem("lastModified");
+    	renameMethods.addItem("createdOn");
+    	renameMethods.addItem("name");
+    	
+    	renameMethods.setBounds(472, 230, 200, 20);
+    	
+    	add(renameMethodLbl);
+    	add(renameMethods);
     }
     
     private void addFileChooser() {
@@ -114,8 +131,9 @@ public class FileRenamerMain extends JFrame{
     }
     
     private void renameFiles() throws IOException {
+    	String selectedMethod = renameMethods.getSelectedItem().toString();
     	FileRenamerFactory renamerFactory = new FileRenamerFactory();
-    	FileRenamer fileRenamer = renamerFactory.getFileRenamer("lastModified");
+    	FileRenamer fileRenamer = renamerFactory.getFileRenamer(selectedMethod);
     	
     	fileRenamer.rename(files, newNameField.getText());
     }
