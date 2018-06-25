@@ -105,53 +105,19 @@ public class FileRenamerMain extends JFrame{
     }
 
     private ArrayList<String> getFilesFromDirectory(String path){
-	    if(path.length() == 0){
-	        throw new IllegalArgumentException("path is empty");
-        }
-
-        ArrayList<String> fileNames = new ArrayList<String>();
-        File folder = new File(path);
-        File[] listOfFiles = folder.listFiles();
-        
-        files = new ArrayList<File>(Arrays.asList(listOfFiles));
-
-        for (File file : listOfFiles) {
-            if (file.isFile()) {
-                fileNames.add(file.getName());
-                System.out.println(file.getName());
-            }
-        }
-
-        return  fileNames;
+    	DirectoryManager dirManager = new DirectoryManager();
+    	Tuple<ArrayList<String>, ArrayList<File>> fileInfos = dirManager.getFilesFromDirectory(path);
+    	
+    	files = fileInfos.y;
+    	
+    	return fileInfos.x;
     }
     
     private void renameFiles() throws IOException {
-    	if(files.isEmpty()) {
-    		throw new IllegalArgumentException("no files selected");
-    	}
+    	FileRenamerFactory renamerFactory = new FileRenamerFactory();
+    	FileRenamer fileRenamer = renamerFactory.getFileRenamer("lastModified");
     	
-    	String prefix = newNameField.getText();
-    	
-    	if(prefix == "") {
-    		throw new IllegalArgumentException("no prefix is provided");
-    	}
-    	
-    	int count = 0;
-    	
-    	files.sort(Comparator.comparing(File::lastModified));
-    	
-    	 for( File file: files ) {
-    		count ++;
-    		
-    		File newFile = new File(file.getParent(), prefix + "-" + count);
-    		
-    		try {
-				Files.move(file.toPath(), newFile.toPath());
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw e;
-			}
-    	}
+    	fileRenamer.rename(files, newNameField.getText());
     }
 
     public static void main(String[] args) {
