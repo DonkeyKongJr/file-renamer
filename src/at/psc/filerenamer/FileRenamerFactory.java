@@ -6,6 +6,9 @@ public class FileRenamerFactory {
 		if(fileRenamerType.equalsIgnoreCase("lastModified")){
 			return new FileRenamerModifiedOn();
 		}
+		else if(fileRenamerType.equalsIgnoreCase("name")){
+			return new FileRenamerName();
+		}
 		
 		throw new IllegalArgumentException("Factory "+ fileRenamerType +" not found");
 	}
