@@ -6,6 +6,8 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import org.apache.commons.io.FilenameUtils;
+
 public class FileRenamerModifiedOn implements FileRenamer {
 
 	@Override
@@ -25,7 +27,13 @@ public class FileRenamerModifiedOn implements FileRenamer {
     	 for( File file: files ) {
     		count ++;
     		
-    		File newFile = new File(file.getParent(), prefix + "-" + count);
+    		String extensions = FilenameUtils.getExtension(file.toPath().toString());
+    		
+    		if(extensions.length() > 0) {
+    			extensions = "." + extensions;
+    		}
+    		
+    		File newFile = new File(file.getParent(), prefix + "-" + count + extensions);
     		
     		try {
 				Files.move(file.toPath(), newFile.toPath());
