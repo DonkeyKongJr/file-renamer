@@ -92,7 +92,6 @@ public class FileRenamerMain extends JFrame{
     	renameMethodLbl.setBounds(472, 210, 200, 20);
     	
     	renameMethods.addItem("lastModified");
-    	renameMethods.addItem("createdOn");
     	renameMethods.addItem("name");
     	
     	renameMethods.setBounds(472, 230, 200, 20);
